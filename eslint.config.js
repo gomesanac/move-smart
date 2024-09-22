@@ -1,5 +1,8 @@
 import js from '@eslint/js'
 import globals from 'globals'
+import importHelpers from 'eslint-plugin-import-helpers'
+import jestDom from 'eslint-plugin-jest-dom'
+import prettier from 'eslint-plugin-prettier'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
@@ -11,18 +14,35 @@ export default tseslint.config(
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: globals.browser
     },
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      'import-helpers': importHelpers,
+      'jest-dom': jestDom,
+      prettier
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      'import-helpers/order-imports': [
+        'warn',
+        {
+          newlinesBetween: 'always',
+          groups: [
+            '/^react$/',
+            '/^@chakra-ui/',
+            'module',
+            '/^@/',
+            ['parent', 'sibling', 'index']
+          ],
+          alphabetize: { order: 'asc', ignoreCase: true }
+        }
+      ],
       'react-refresh/only-export-components': [
         'warn',
-        { allowConstantExport: true },
-      ],
-    },
-  },
+        { allowConstantExport: true }
+      ]
+    }
+  }
 )
