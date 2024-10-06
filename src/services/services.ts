@@ -1,11 +1,11 @@
 import { openRouteServiceApiKey } from '../constants/Envs'
-import { Coordinates } from './services.types'
+import { Coordinates, RouteResponse } from './services.types'
 
 const fetchRoute = async (
   origin: Coordinates,
   destination: Coordinates,
   mode: string
-): Promise<Coordinates[]> => {
+): Promise<RouteResponse | null> => {
   const apiKey = openRouteServiceApiKey
 
   const response = await fetch(
@@ -18,14 +18,20 @@ const fetchRoute = async (
 
   const data = await response.json()
 
-  const coordinates = data.features[0].geometry.coordinates.map(
-    (coord: [number, number]) => ({
-      lat: coord[1],
-      lng: coord[0]
-    })
-  )
+  if (data && data.features.length > 0) {
+    return {
+      coordinates: data.features[0].geometry.coordinates.map(
+        (coord: [number, number]) => ({
+          lat: coord[1],
+          lng: coord[0]
+        })
+      ),
+      duration: data.features[0].properties.segments[0].duration,
+      distance: data.features[0].properties.segments[0].distance
+    }
+  }
 
-  return coordinates
+  return null
 }
 
 const fetchCoordinates = async (

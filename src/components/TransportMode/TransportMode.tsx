@@ -1,17 +1,17 @@
 import React from 'react'
 
+import { transportModes } from '@/constants/TransportMode'
 import { useMode } from '@/contexts/ModeContext'
 import { Box, Select, Text } from '@/ui'
-
-
 
 const TransportMode: React.FC = () => {
   const { mode, handleMode } = useMode()
 
   const modes = [
-    { label: 'Carro', value: 'driving-card', id: 1 },
-    { label: 'Caminhada', value: 'foot-walking', id: 2 },
-    { label: 'Bicicleta', value: 'cycling-regular', id: 3 }
+    { label: 'Carro', value: transportModes.car, id: 1 },
+    { label: 'Caminhada', value: transportModes.walking, id: 2 },
+    { label: 'Bicicleta', value: transportModes.cycling, id: 3 },
+    { label: 'Bicicleta elétrica', value: transportModes.eletricCycling, id: 4 }
   ]
 
   return (

@@ -9,7 +9,7 @@ interface RouteMapProps {
 }
 
 const RouteMap: React.FC<RouteMapProps> = ({ route }) => {
-  if (!route) return undefined
+  if (!route) return null
 
   return <Polyline positions={route} color="blue" />
 }

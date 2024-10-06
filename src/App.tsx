@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 
 import Header from '@/components/Header'
 import Map from '@/components/Map'
+import RouteDetails from '@/components/RouteDetails'
 import SearchBar from '@/components/SearchBar'
 import TransportMode from '@/components/TransportMode'
 import { useLocation } from '@/contexts/LocationContext'
@@ -17,7 +18,7 @@ const App: React.FC = () => {
   const { origin, handleOrigin, destination} =
     useLocation()
   const { mode } = useMode()
-  const { route, handleRoute } = useRoute()
+  const { route, handleRoute, setLoading } = useRoute()
 
   useEffect(() => {
     if (navigator.geolocation && !origin) {
@@ -41,6 +42,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const getRoute = async () => {
       if (origin && destination) {
+        setLoading(true)
         const routeData = await services.fetchRoute(origin, destination, mode)
         handleRoute(routeData)
       }
@@ -49,7 +51,7 @@ const App: React.FC = () => {
     if (origin && destination && !route) {
       getRoute()
     }
-  }, [destination, mode, origin, route, handleRoute])
+  }, [destination, mode, origin, route, handleRoute, setLoading])
 
   return (
     <Box bgColor="brand.background" h="100vh">
@@ -58,6 +60,7 @@ const App: React.FC = () => {
         <SearchBar />
         <TransportMode />
         <Map />
+        <RouteDetails />
       </Container>
     </Box>
   )

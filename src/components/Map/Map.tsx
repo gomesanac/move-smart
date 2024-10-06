@@ -11,9 +11,11 @@ import { Flex, Spinner } from '@/ui'
 
 const Map: React.FC = () => {
   const { origin, destination } = useLocation()
-  const { route } = useRoute()
+  const {
+    route
+  } = useRoute()
 
-  return origin ?  (
+  return origin ? (
     <MapContainer
       center={origin}
       zoom={13}
@@ -33,11 +35,17 @@ const Map: React.FC = () => {
           <Popup>Destino</Popup>
         </Marker>
       )}
-      <RouteMap route={route} />
+      {route && <RouteMap route={route} />}
     </MapContainer>
   ) : (
     <Flex justifyContent="center" px={6} py={12}>
-      <Spinner size="xl" thickness="4px" speed="0.65s" emptyColor="gray.200" color="brand.tertiary" />
+      <Spinner
+        size="xl"
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.200"
+        color="brand.tertiary"
+      />
     </Flex>
   )
 }
