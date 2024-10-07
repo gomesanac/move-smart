@@ -1,10 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, PropsWithChildren, useContext, useState } from 'react'
 
-import { Coordinates, RouteResponse } from '@/services'
+import { RouteResponse } from '@/services'
 
 interface RouteContextProps {
-  route: Coordinates[] | null
+  route: string | null
   duration: number | null
   distance: number | null
   handleRoute: (route: RouteResponse | null) => void
@@ -16,7 +16,7 @@ const RouteContext = createContext({} as RouteContextProps)
 
 export const RouteProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(false)
-  const [route, setRoute] = useState<Coordinates[] | null>(null)
+  const [route, setRoute] = useState<string | null>(null)
   const [duration, setDuration] = useState<number | null>(null)
   const [distance, setDistance] = useState<number | null>(null)
 

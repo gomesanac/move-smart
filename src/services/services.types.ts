@@ -4,7 +4,7 @@ export interface Coordinates {
 }
 
 export interface RouteResponse {
-  coordinates: Coordinates[]
+  coordinates: string
   duration: number
   distance: number
 }

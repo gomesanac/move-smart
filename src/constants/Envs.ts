@@ -1,2 +1,1 @@
-export const openRouteServiceApiKey = import.meta.env
-  .VITE_OPEN_ROUTE_SERVICE_API_KEY
+export const moveSmartApi = import.meta.env.VITE_MOVE_SMART_API

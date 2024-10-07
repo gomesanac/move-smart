@@ -9,13 +9,25 @@ import { useLocation } from '@/contexts/LocationContext'
 import { useRoute } from '@/contexts/RouteContext'
 import { Flex, Spinner } from '@/ui'
 
+import customIcon from './Icon'
+
 const Map: React.FC = () => {
   const { origin, destination } = useLocation()
-  const {
-    route
-  } = useRoute()
+  const { route, loading } = useRoute()
 
-  return origin ? (
+  if (loading || !origin) {
+    return <Flex justifyContent="center" px={6} py={12}>
+      <Spinner
+        size="xl"
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.200"
+        color="brand.tertiary"
+      />
+    </Flex>
+  }
+
+  return (
     <MapContainer
       center={origin}
       zoom={13}
@@ -26,27 +38,17 @@ const Map: React.FC = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {origin && (
-        <Marker position={origin}>
+        <Marker position={origin} icon={customIcon}>
           <Popup>Origem</Popup>
         </Marker>
       )}
       {destination && (
-        <Marker position={destination}>
+        <Marker position={destination} icon={customIcon}>
           <Popup>Destino</Popup>
         </Marker>
       )}
       {route && <RouteMap route={route} />}
     </MapContainer>
-  ) : (
-    <Flex justifyContent="center" px={6} py={12}>
-      <Spinner
-        size="xl"
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="gray.200"
-        color="brand.tertiary"
-      />
-    </Flex>
   )
 }
 

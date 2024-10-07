@@ -8,10 +8,10 @@ const TransportMode: React.FC = () => {
   const { mode, handleMode } = useMode()
 
   const modes = [
-    { label: 'Carro', value: transportModes.car, id: 1 },
+    { label: 'Carro', value: transportModes.driving, id: 1 },
     { label: 'Caminhada', value: transportModes.walking, id: 2 },
-    { label: 'Bicicleta', value: transportModes.cycling, id: 3 },
-    { label: 'Bicicleta elétrica', value: transportModes.eletricCycling, id: 4 }
+    { label: 'Bicicleta', value: transportModes.bicycling, id: 3 },
+    { label: 'Transporte público', value: transportModes.transit, id: 4 }
   ]
 
   return (

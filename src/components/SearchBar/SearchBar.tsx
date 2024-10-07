@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 
 import { useLocation } from '@/contexts/LocationContext'
-import { Box, Button, Input, SimpleGrid, Text } from '@/ui'
+import { Box, Button, Input, SimpleGrid, Text, useToast } from '@/ui'
 
 const SearchBar: React.FC = () => {
   const { handleOrigin, handleDestination } = useLocation()
+
+  const toast = useToast()
 
   const [originInput, setOriginInput] = useState<string>('')
   const [destinationInput, setDestinationInput] = useState<string>('')
@@ -24,11 +26,24 @@ const SearchBar: React.FC = () => {
       if (data.length > 0) {
         return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) }
       } else {
-        alert(`Local "${location}" não encontrado!`)
+        toast({
+          title: `Local "${location}" não encontrado!`,
+          status: 'warning',
+          duration: 5000,
+          isClosable: true
+        })
+
         return null
       }
-    } catch (error) {
-      console.error('Erro ao buscar coordenadas:', error)
+    } catch {
+      toast({
+        title: 'Erro ao buscar coordenadas.',
+        description: 'Tente novamente.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      })
+
       return null
     }
   }

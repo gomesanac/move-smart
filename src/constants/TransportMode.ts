@@ -1,19 +1,19 @@
 const transportModes = {
-  car: 'driving-car',
-  cycling: 'cycling-regular',
-  walking: 'foot-walking',
-  eletricCycling: 'cycling-electric'
+  driving: 'driving',
+  bicycling: 'bicycling',
+  walking: 'walking',
+  transit: 'transit'
 }
 
 const modeEnvironmentalImpact = {
-  [transportModes.car]: 0.21,
-  [transportModes.cycling]: 0,
+  [transportModes.driving]: 0.21,
+  [transportModes.bicycling]: 0,
   [transportModes.walking]: 0
 }
 
 const modeCost = {
-  [transportModes.car]: 6.07,
-  [transportModes.cycling]: 0,
+  [transportModes.driving]: 6.07,
+  [transportModes.bicycling]: 0,
   [transportModes.walking]: 0
 }
 

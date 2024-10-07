@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly OPEN_ROUTE_SERVICE_API_KEY: string
+  readonly VITE_MOVE_SMART_API: string
   // more env variables...
 }
 

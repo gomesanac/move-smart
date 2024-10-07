@@ -9,7 +9,7 @@ interface ModeContextProps {
 export const ModeContext = createContext({} as ModeContextProps)
 
 export const ModeProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [mode, setMode] = useState<string>('driving-car')
+  const [mode, setMode] = useState<string>('driving')
 
   const handleMode = (mode: string) => {
     setMode(mode)

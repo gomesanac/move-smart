@@ -1,60 +1,29 @@
-import { openRouteServiceApiKey } from '../constants/Envs'
-import { Coordinates, RouteResponse } from './services.types'
+import axios from 'axios';
 
-const fetchRoute = async (
-  origin: Coordinates,
-  destination: Coordinates,
+import { moveSmartApi } from '@/constants/Envs';
+
+import { RouteResponse } from './services.types'
+
+const fetchRouteFromGoogle = async (
+  origin: { lat: number; lng: number },
+  destination: { lat: number; lng: number },
   mode: string
 ): Promise<RouteResponse | null> => {
-  const apiKey = openRouteServiceApiKey
-
-  const response = await fetch(
-    `https://api.openrouteservice.org/v2/directions/${mode}?api_key=${apiKey}&start=${origin.lng},${origin.lat}&end=${destination.lng},${destination.lat}`
-  )
-
-  if (!response.ok) {
-    throw new Error('Error fetching the route')
-  }
-
-  const data = await response.json()
-
-  if (data && data.features.length > 0) {
-    return {
-      coordinates: data.features[0].geometry.coordinates.map(
-        (coord: [number, number]) => ({
-          lat: coord[1],
-          lng: coord[0]
-        })
-      ),
-      duration: data.features[0].properties.segments[0].duration,
-      distance: data.features[0].properties.segments[0].distance
-    }
-  }
-
-  return null
-}
-
-const fetchCoordinates = async (
-  location: string
-): Promise<{ lat: number; lng: number } | undefined> => {
   try {
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-        location
-      )}`
-    )
+    const { data } = await axios.get(`${moveSmartApi}/directions`, {
+      params: {
+        origin: `${origin.lat},${origin.lng}`,
+        destination: `${destination.lat},${destination.lng}`,
+        mode
+      }
+    })
 
-    const data = await response.json()
-
-    if (data.length > 0) {
-      return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) }
-    } else {
-      return undefined
-    }
+    return data
   } catch (error) {
-    console.error('Erro ao buscar coordenadas:', error)
-    return undefined
+    console.error('Erro ao buscar rota:', error)
+    throw error
   }
 }
 
-export default { fetchRoute, fetchCoordinates }
+
+export default { fetchRouteFromGoogle }
