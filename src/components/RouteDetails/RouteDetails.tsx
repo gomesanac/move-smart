@@ -3,13 +3,15 @@ import React from 'react'
 import {
   carMode,
   modeEnvironmentalImpact,
-  modeCost
+  modeCost,
+  transportModes
 } from '@/constants/TransportMode'
 import { useMode } from '@/contexts/ModeContext'
 import { useRoute } from '@/contexts/RouteContext'
+import { Box, Text } from '@/ui'
 
 const RouteDetails: React.FC= () => {
-  const { duration, distance } = useRoute()
+  const { duration, distance, loading } = useRoute()
   const { mode } = useMode()
 
   const formatDuration = (duration: number) => {
@@ -29,28 +31,39 @@ const RouteDetails: React.FC= () => {
 
   const calculateCost = (mode: string, distance: number) => {
     const costPerKm = modeCost[mode]
-    return ((costPerKm * distance) / (1000 * carMode.autonomy)).toFixed(2)
+
+    if (mode === transportModes.driving)
+      return ((costPerKm * distance) / (1000 * carMode.autonomy)).toFixed(2)
+
+    if (mode === transportModes.transit)
+      return costPerKm
+
+    return costPerKm
   }
 
-  if (!duration || !distance) return null
+  if (!duration || !distance || loading) return null
 
   return (
-    <div>
-      <h3>Detalhes da Rota</h3>
-      <p>
-        <strong>Duração:</strong> {formatDuration(duration)}
-      </p>
-      <p>
-        <strong>Distância:</strong> {formatDistance(distance)} km
-      </p>
-      <p>
-        <strong>Custo Estimado:</strong> R$ {calculateCost(mode, distance)}
-      </p>
-      <p>
-        <strong>Impacto Ambiental:</strong>{' '}
+    <Box>
+      <Box mb={2}>
+        <Text fontSize="lg" as="b">
+          Detalhes da Rota
+        </Text>
+      </Box>
+      <Text>
+        <Text as="b">Duração:</Text> {formatDuration(duration)}
+      </Text>
+      <Text>
+        <Text as="b">Distância:</Text> {formatDistance(distance)} km
+      </Text>
+      <Text>
+        <Text as="b">Custo Estimado:</Text> R$ {calculateCost(mode, distance)}
+      </Text>
+      <Text>
+        <Text as="b">Impacto Ambiental: </Text>
         {calculateEnvironmentalImpact(mode, distance)} kg de CO₂
-      </p>
-    </div>
+      </Text>
+    </Box>
   )
 }
 

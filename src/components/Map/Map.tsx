@@ -16,15 +16,17 @@ const Map: React.FC = () => {
   const { route, loading } = useRoute()
 
   if (loading || !origin) {
-    return <Flex justifyContent="center" px={6} py={12}>
-      <Spinner
-        size="xl"
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="gray.200"
-        color="brand.tertiary"
-      />
-    </Flex>
+    return (
+      <Flex justifyContent="center" px={6} py={12}>
+        <Spinner
+          size="xl"
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="brand.tertiary"
+        />
+      </Flex>
+    )
   }
 
   return (

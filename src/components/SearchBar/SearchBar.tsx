@@ -1,10 +1,15 @@
 import React, { useState } from 'react'
 
 import { useLocation } from '@/contexts/LocationContext'
+import { useMode } from '@/contexts/ModeContext'
+import { useRoute } from '@/contexts/RouteContext'
 import { Box, Button, Input, SimpleGrid, Text, useToast } from '@/ui'
 
 const SearchBar: React.FC = () => {
-  const { handleOrigin, handleDestination } = useLocation()
+  const { handleOrigin,
+      handleDestination } = useLocation()
+  const { mode } = useMode()
+  const { handleRoute } = useRoute()
 
   const toast = useToast()
 
@@ -55,6 +60,8 @@ const SearchBar: React.FC = () => {
     if (originCoords && destinationCoords) {
       handleOrigin(originCoords)
       handleDestination(destinationCoords)
+
+      handleRoute({origin: originCoords, destination: destinationCoords, mode})
     }
   }
 
@@ -74,7 +81,15 @@ const SearchBar: React.FC = () => {
           value={destinationInput}
           onChange={e => setDestinationInput(e.target.value)}
         />
-        <Button onClick={handleSearch} color="brand.text" bgColor="gray.200" _hover={{ bgColor: "gray.300"}}>Pesquisar</Button>
+        <Button
+          onClick={handleSearch}
+          color="brand.text"
+          bgColor="gray.200"
+          _hover={{ bgColor: "gray.300" }}
+          disabled={!originInput || !destinationInput}
+        >
+          Pesquisar
+        </Button>
       </SimpleGrid>
     </Box>
   )
